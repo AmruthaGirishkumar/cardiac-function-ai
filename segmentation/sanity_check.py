@@ -1,30 +1,3 @@
-"""
-sanity_check.py
------------------
-Section 8.1.1: "Run inference on full videos (all frames, not just ED/ES)
-and visually sanity-check that the mask tracks the ventricle smoothly
-across the cardiac cycle -- flag any video where the mask 'jumps' or
-disappears."
-
-This script does two things for each sample video:
-  1. Quantitative flagging -- computes LV mask pixel-area per frame and
-     flags frames where the area suddenly jumps (large frame-to-frame
-     change) or collapses to near-zero (the mask "disappearing").
-  2. Visual output -- writes an .mp4 with the predicted mask overlaid in
-     translucent red on every frame, so you can actually watch it and
-     confirm the boundary tracks the ventricle smoothly.
-
-Run this AFTER training, before writing up Dice/IoU numbers -- a model
-that scores fine on Dice but visibly flickers/jumps frame-to-frame is
-worth catching here rather than at integration time.
-
-Usage:
-    python sanity_check.py \
-        --checkpoint checkpoints/deeplabv3_lv_segmentation.pth \
-        --videos sample1.avi sample2.avi sample3.avi \
-        --out-dir sanity_check_outputs/
-"""
-
 import argparse
 import os
 
