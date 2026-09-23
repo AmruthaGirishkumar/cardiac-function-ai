@@ -1,22 +1,3 @@
-"""
-inspect_dataset.py
--------------------
-Section 8.1.1, step 2: "Load and inspect FileList.csv and VolumeTracings.csv;
-confirm the TRAIN/VAL/TEST split and row counts match Section 5.3 BEFORE
-doing anything else."
-
-Run this FIRST, right after EchoNet-Dynamic access is granted and downloaded
--- before writing/running any training code. It only reads the two CSVs
-(does not touch the video files), so it runs in seconds and tells you
-immediately if something about the download is off before you invest time
-in training.
-
-Usage:
-    python inspect_dataset.py \
-        --file-list /path/to/FileList.csv \
-        --volume-tracings /path/to/VolumeTracings.csv
-"""
-
 import argparse
 import sys
 
