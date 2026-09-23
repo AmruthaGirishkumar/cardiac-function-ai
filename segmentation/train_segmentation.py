@@ -1,22 +1,3 @@
-"""
-train_segmentation.py
-----------------------
-Fine-tunes DeepLabV3 (ResNet-50) on EchoNet-Dynamic ED/ES frame-mask pairs.
-
-This is NOT part of the Contract 1 deliverable (segmentation_module.py) --
-per Section 8.1.1: "do not hand off training code or notebooks as the
-deliverable; the deliverable is the clean, callable module." This script's
-only job is to produce the checkpoint file that segmentation_module.py's
-load_segmentation_model() then loads.
-
-Usage:
-    python train_segmentation.py \
-        --videos-dir /path/to/EchoNet-Dynamic/Videos \
-        --file-list /path/to/FileList.csv \
-        --volume-tracings /path/to/VolumeTracings.csv \
-        --epochs 15 --batch-size 8 --lr 1e-4
-"""
-
 import argparse
 import os
 import time
