@@ -1,18 +1,3 @@
-"""
-evaluate.py
------------
-Computes Dice and IoU on the held-out TEST split against VolumeTracings.csv
-ground truth (Section 7.2 / Section 8.1.3 Definition of Done).
-
-Usage:
-    python evaluate.py \
-        --videos-dir /path/to/Videos \
-        --file-list /path/to/FileList.csv \
-        --volume-tracings /path/to/VolumeTracings.csv \
-        --checkpoint checkpoints/deeplabv3_lv_segmentation.pth \
-        --out evaluation_notes.md
-"""
-
 import argparse
 from datetime import datetime
 
