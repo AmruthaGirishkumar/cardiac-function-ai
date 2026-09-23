@@ -1,22 +1,3 @@
-"""
-segmentation_module.py
------------------------
-Track A deliverable (Muskan) -- Contract 1, Section 8.4.1 of the technical spec.
-
-This is the ONLY file Peer Shaik and Amrutha should ever need to import from.
-It has exactly the three functions the contract specifies, with the exact
-signatures and return shapes agreed in the spec:
-
-    load_segmentation_model(checkpoint_path)      -> model object
-    extract_frames(video_path, resize=(112,112))  -> (T, H, W, 3) uint8
-    segment_video(video_path, model)               -> (T, H, W) uint8, values {0,1}
-
-Deliberately has NO dependency on pandas, csv parsing, or anything else
-training-specific -- that all lives in dataset.py / train_segmentation.py.
-This keeps the deliverable module lightweight for whoever imports it
-downstream (Peer Shaik's ef_module.py, Amrutha's FastAPI backend).
-"""
-
 import cv2
 import numpy as np
 import torch
