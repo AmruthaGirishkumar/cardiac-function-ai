@@ -1,17 +1,3 @@
-"""
-losses.py
----------
-Loss functions for LV segmentation training.
-
-Per Section 6.1 of the technical spec: we combine Binary Cross-Entropy (BCE)
-with Dice loss. BCE alone treats every pixel equally, but the left ventricle
-is a small region against a large background, so a model can get deceptively
-low BCE just by predicting "background" everywhere. Dice loss is computed on
-the overlap between prediction and ground truth, so it directly rewards
-getting the (small) foreground region right and pulls training back toward
-that class balance.
-"""
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
