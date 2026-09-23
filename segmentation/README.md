@@ -1,8 +1,7 @@
 # Segmentation Track (Muskan) — Track A
 
 Turns a raw echocardiogram video into a per-frame left-ventricle (LV) binary mask.
-This is **Contract 1** of the project's interface spec (Section 8.4.1) — the only
-thing Peer Shaik's `ef_module.py` and Amrutha's backend need from this folder.
+This is **Contract 1** of the project's interface spec
 
 ## Files
 
