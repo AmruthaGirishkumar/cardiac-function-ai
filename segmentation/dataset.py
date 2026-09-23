@@ -1,29 +1,3 @@
-"""
-dataset.py
-----------
-PyTorch Dataset for EchoNet-Dynamic (Section 5 of the technical spec).
-
-EchoNet-Dynamic ships as:
-    Videos/               10,030 .avi echo videos
-    FileList.csv           one row per video: FileName, EF, ESV, EDV, FPS,
-                            NumberOfFrames, Split (TRAIN/VAL/TEST), etc.
-    VolumeTracings.csv      per-video coordinate line segments tracing the LV
-                            boundary, but ONLY for the ED and ES frame of
-                            each video.
-
-Ground truth for segmentation only exists on those two labeled frames per
-video, so this Dataset yields (frame, mask) pairs at the ED/ES frame level,
-not full videos. Full-video inference (all frames) happens later, at
-inference time, via segmentation_module.segment_video() -- that function
-uses the *trained* model to predict masks on every frame, not just ED/ES.
-
-This file is intentionally independent of segmentation_module.py: this is
-the *training data* pipeline, segmentation_module.py is the *deliverable
-inference* module described in Contract 1 (Section 8.4.1). Keeping them
-separate means the deliverable module has no dependency on pandas/csv/
-training-only code.
-"""
-
 import os
 from dataclasses import dataclass
 
