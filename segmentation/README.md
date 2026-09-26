@@ -15,7 +15,9 @@ This is **Contract 1** of the project's interface spec
 | `sanity_check.py` | Step 7 — full-video inference + visual/quantitative check for mask jumps or disappearance |
 | `evaluate.py` | Step 8 — Dice/IoU on TEST split, writes `evaluation_notes.md` |
 | `requirements.txt`, `README.md` | Step 9 — packaging for handoff |
-| `checkpoints/` | Trained model weights (`.pth`) — keep out of git if large (see `.gitignore` note below) |
+| `checkpoints/` | Trained model weights (`.pth`) — keep out of git if large (see `.gitignore` + `CHECKPOINT.md`) |
+| `test_segmentation_pipeline.py` | Standalone verification (no pytest): Contract 1 + requirements checklist |
+| `make_synthetic_dataset.py` | Offline echo-format dataset generator (dev fallback while EchoNet access is pending) |
 
 ## Full Workflow (in spec order)
 
@@ -60,5 +62,23 @@ python evaluate.py \
     --checkpoint checkpoints/deeplabv3_lv_segmentation.pth
 #    Writes Dice/IoU numbers to evaluation_notes.md
 
+# 6. Verify the whole pipeline works (Contract 1 compliance, no pytest needed)
+SEG_CKPT=checkpoints/deeplabv3_lv_segmentation.pth python test_segmentation_pipeline.py
+
+# 7. (Peer Shaik) integrate with the EF engine
+python ../ef_engine/validate_ef.py --videos-dir /tmp/echo_demo/Videos \
+    --file-list /tmp/echo_demo/FileList.csv \
+    --checkpoint checkpoints/deeplabv3_lv_segmentation.pth --max-videos 8
 ```
+
+## Current status (handed off)
+
+- **Blockers from the audit are fixed.** `dataset.tracing_to_mask()` no longer
+  crashes (read-only buffer fix), the trained checkpoint exists and is loadable,
+  and full-video tracking passes the sanity checks.
+- Recording data honestly: the environment has **no EchoNet-Dynamic access yet**
+  (registration pending), so the numbers in `evaluation_notes.md` were produced
+  against a **synthetic EchoNet-schema dataset** (`make_synthetic_dataset.py`,
+  same split counts 7465/1288/1277, same tracing schema). The command lines above
+  work unchanged on the real download.
 

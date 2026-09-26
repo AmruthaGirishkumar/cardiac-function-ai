@@ -56,14 +56,24 @@ def load_volume_tracings(paths: EchoNetPaths) -> pd.DataFrame:
 def tracing_to_mask(frame_tracings: pd.DataFrame, height: int, width: int) -> np.ndarray:
     """Converts one frame's VolumeTracings.csv rows into a filled binary polygon mask.
 
-    VolumeTracings.csv stores the LV boundary as a set of line segments
-    (X1, Y1, X2, Y2 per row) rather than an ordered polygon, so we collect
-    the segment endpoints and rasterize them into a filled region with
-    skimage.draw.polygon, per Section 5.3 ("produced with polygon
-    rasterization (e.g. skimage.draw.polygon)").
+    VolumeTracings.csv stores the LV boundary as a set of consecutive line
+    segments (X1, Y1, X2, Y2 per row) drawn in contour order, rather than an
+    ordered polygon. The ordered contour vertices are therefore every row's
+    start point (X1, Y1) plus the final row's end point (X2_last, Y2_last),
+    which closes the loop. We rasterize that ordered polygon into a filled
+    binary region with skimage.draw.polygon, per Section 5.3.
+
+    Some EchoNet releases store the tracing coordinates normalized to [0, 1];
+    if so, scale them up to pixel space before rasterizing.
     """
-    xs = pd.concat([frame_tracings["X1"], frame_tracings["X2"]]).to_numpy()
-    ys = pd.concat([frame_tracings["Y1"], frame_tracings["Y2"]]).to_numpy()
+    xs = frame_tracings["X1"].to_numpy(dtype=np.float64, copy=True)
+    ys = frame_tracings["Y1"].to_numpy(dtype=np.float64, copy=True)
+    xs = np.append(xs, float(frame_tracings["X2"].iloc[-1]))
+    ys = np.append(ys, float(frame_tracings["Y2"].iloc[-1]))
+
+    if xs.max() <= 1.0 and ys.max() <= 1.0:
+        xs = xs * (width - 1)
+        ys = ys * (height - 1)
 
     mask = np.zeros((height, width), dtype=np.uint8)
     if len(xs) < 3:
